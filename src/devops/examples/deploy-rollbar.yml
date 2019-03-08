@@ -1,0 +1,24 @@
+description: reporting a deployment in an environment to Rollbar
+
+usage:
+  version: 2.1
+
+  orbs:
+    devops: moorara/devops@0.0.0
+
+  jobs:
+    deploy:
+      executor:
+        name: devops/tools
+        dockerhub_username: "$DOCKERHUB_USERNAME"
+        dockerhub_password: "$DOCKERHUB_PASSWORD"
+      steps:
+        - devops/deploy-rollbar:
+            access_token: "$ROLLBAR_TOKEN"
+            environment: "production"
+            status: "succeeded"
+
+  workflows:
+    your-workflow:
+      jobs:
+        - deploy

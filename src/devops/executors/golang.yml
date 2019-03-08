@@ -1,0 +1,20 @@
+# https://circleci.com/docs/2.0/configuration-reference/#resource_class
+resource_class: medium
+
+parameters:
+  dockerhub_username:
+    description: the username for Docker Hub image registry
+    type: string
+  dockerhub_password:
+    description: the password for Docker Hub image registry
+    type: string
+  version:
+    description: the tag for Docker image
+    type: string
+    default: latest
+
+docker:
+  - image: moorara/golang:<<parameters.version>>
+    auth:
+      username: <<parameters.dockerhub_username>>
+      password: <<parameters.dockerhub_password>>

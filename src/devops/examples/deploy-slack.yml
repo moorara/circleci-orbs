@@ -1,0 +1,27 @@
+description: sending a notification on Slack for a deployment
+
+usage:
+  version: 2.1
+
+  orbs:
+    devops: moorara/devops@0.0.0
+
+  jobs:
+    deploy:
+      executor:
+        name: devops/tools
+        dockerhub_username: "$DOCKERHUB_USERNAME"
+        dockerhub_password: "$DOCKERHUB_PASSWORD"
+      steps:
+        - devops/deploy-slack:
+            webhook: "$SLACK_WEBHOOK"
+            color: "#20bf55"
+            environment: "production"
+            region: "us-east-1"
+            artifact: "user-service"
+            version: "0.1.0"
+
+  workflows:
+    your-workflow:
+      jobs:
+        - deploy

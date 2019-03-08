@@ -1,0 +1,23 @@
+description: creating and writing a semantic version from and to VERSION file
+
+usage:
+  version: 2.1
+
+  orbs:
+    devops: moorara/devops@0.0.0
+
+  jobs:
+    build:
+      executor:
+        name: devops/golang
+        dockerhub_username: "$DOCKERHUB_USERNAME"
+        dockerhub_password: "$DOCKERHUB_PASSWORD"
+      steps:
+        - checkout
+        - devops/set-version
+        - go build
+
+  workflows:
+    your-workflow:
+      jobs:
+        - build
