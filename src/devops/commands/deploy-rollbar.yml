@@ -1,0 +1,36 @@
+#
+# Ref:
+#   - https://docs.rollbar.com/reference#post-deploy
+#
+
+description: the command for reporting deployment information to Rollbar
+
+parameters:
+  access_token:
+    description: the project post_server_item access token
+    type: string
+  environment:
+    description: the name of environment to which the revision was deployed
+    type: string
+  status:
+    description: status of the deployment (started, succeeded, failed, or timed_out)
+    type: string
+  comment:
+    description: additional text to include with the deployment
+    type: string
+    default: ""
+
+steps:
+  - run:
+      name: Report Deployment Information To Rollbar
+      command: |
+        local_username="$CIRCLE_USERNAME"
+        commit_sha=$(git rev-parse --verify HEAD)
+        curl \
+          -X POST https://api.rollbar.com/api/1/deploy \
+          -F access_token="<<parameters.access_token>>" \
+          -F environment="<<parameters.environment>>" \
+          -F revision="$commit_sha" \
+          -F local_username="$local_username" \
+          -F status="<<parameters.status>>" \
+          -F comment="<<parameters.comment>>"

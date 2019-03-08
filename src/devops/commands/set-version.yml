@@ -1,0 +1,40 @@
+#
+# Ref: https://semver.org
+#
+
+description: the command for updating VERSION file
+
+parameters:
+  prerelease:
+    description: a pre-release version as defined in SemVer spec 2.0 (a series of dot separated identifiers)
+    type: string
+    default: ""
+  metadata:
+    description: build metadata as defined in SemVer spec 2.0 (a series of dot separated identifiers)
+    type: string
+    default: ""
+
+steps:
+  - run:
+      name: Write Version
+      command: |
+        VERSION=$(cat VERSION)
+        SUFFIX=""
+
+        # Pre-release version
+        if [[ "<<parameters.prerelease>>" =~ ^[0-9A-Za-z]+(\.[0-9A-Za-z]+)*$ ]]; then
+          SUFFIX+="-<<parameters.prerelease>>"
+        fi
+
+        # Build metadata
+        if [[ "<<parameters.metadata>>" =~ ^[0-9A-Za-z]+(\.[0-9A-Za-z]+)*$ ]]; then
+          SUFFIX+="+<<parameters.metadata>>"
+        fi
+
+        # Default pre-release version
+        if [[ -z "$SUFFIX" ]]; then
+          SUFFIX="-$(git rev-parse --short HEAD)"  # or SUFFIX="-$CIRCLE_BUILD_NUM"
+        fi
+
+        VERSION=${VERSION/-0/$SUFFIX}
+        echo ${VERSION} > VERSION

@@ -1,0 +1,5 @@
+version: 2.1
+
+description: |
+  A collection of common CircleCI Orbs.
+  https://github.com/moorara/circleci-orbs

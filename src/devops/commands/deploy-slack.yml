@@ -1,0 +1,77 @@
+#
+# Ref:
+#   - https://api.slack.com/docs/message-formatting
+#   - https://api.slack.com/docs/message-attachments
+#   - https://api.slack.com/interactive-messages
+#   - https://api.slack.com/docs/message-buttons
+#   - https://api.slack.com/docs/interactive-message-field-guide
+#
+
+description: the command for sending deployment notifications to Slack
+
+parameters:
+  webhook:
+    description: the Slack webhook url for posting the notification
+    type: string
+  color:
+    description: the color of notification message on Slack
+    type: string
+  environment:
+    description: the environment in which the artifact was deployed
+    type: string
+  region:
+    description: the region in which the artifact was deployed
+    type: string
+  artifact:
+    description: the name of artifact which was deployed
+    type: string
+  version:
+    description: the version of artifact which was deployed
+    type: string
+  include_actions:
+    description: whether or not to include action buttons in the notification
+    type: boolean
+    default: false
+
+steps:
+  - run:
+      name: Send Deployment Notification To Slack
+      command: |
+        commit_sha=$(git rev-parse --verify HEAD)
+        commit_message=$(git log --oneline -n1 | cut -c9-)
+        github_user_name=$(curl -s "https://api.github.com/users/$CIRCLE_USERNAME" | jq -r '.name')
+        github_avatar_url=$(curl -s "https://api.github.com/users/$CIRCLE_USERNAME" | jq -r '.avatar_url')
+        curl \
+          -H 'Content-type: application/json' \
+          -X POST "<<parameters.webhook>>" \
+          --data \
+            "{
+              \"attachments\": [{
+                \"fallback\": \"Deployed <<parameters.artifact>> with version <<parameters.version>> in <<parameters.environment>>/<<parameters.region>>\",
+                \"color\": \"<<parameters.color>>\",
+                \"author_name\": \"$github_user_name\",
+                \"author_link\": \"https://github.com/$CIRCLE_USERNAME\",
+                \"author_icon\": \"$github_avatar_url\",
+                \"title\": \"$commit_message\",
+                \"title_link\": \"https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME/commit/$CIRCLE_SHA1\",
+                \"text\": \"Deployed \`<<parameters.artifact>>\` version \`<<parameters.version>>\` in \`<<parameters.environment>>/<<parameters.region>>\`\",
+                \"actions\": [
+                  <<# parameters.include_actions >>
+                  {
+                    \"type\": \"button\",
+                    \"name\": \"followup\",
+                    \"value\": \"verified\",
+                    \"text\": \"Verify\",
+                    \"style\": \"primary\"
+                  },
+                  {
+                    \"type\": \"button\",
+                    \"name\": \"followup\",
+                    \"value\": \"rollback\",
+                    \"text\": \"Rollback\",
+                    \"style\": \"danger\"
+                  }
+                  <</ parameters.include_actions >>
+                ]
+              }]
+            }"
