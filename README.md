@@ -1,3 +1,6 @@
+[![Build Status][circleci-image]][circleci-url]
+[![Build Status][devops-orb-image]][devops-orb-url]
+
 # CircleCI Orbs
 
 A collection of common and reusable [CircleCI Orbs](https://circleci.com/orbs).
@@ -33,3 +36,9 @@ A collection of common and reusable [CircleCI Orbs](https://circleci.com/orbs).
   - `circleci orb publish <path> <namespace>/<orb>@<version> [flags]`
   - `circleci orb publish increment <path> <namespace>/<orb> <segment> [flags]`
   - `circleci orb publish promote <namespace>/<orb>@<version> <segment> [flags]`
+
+
+[circleci-url]: https://circleci.com/gh/moorara/circleci-orbs/tree/master
+[circleci-image]: https://circleci.com/gh/moorara/circleci-orbs/tree/master.svg?style=shield
+[devops-orb-url]: https://circleci.com/orbs/registry/orb/moorara/devops
+[devops-orb-image]: https://img.shields.io/endpoint.svg?url=https://badges.circleci.io/orb/moorara/devops
