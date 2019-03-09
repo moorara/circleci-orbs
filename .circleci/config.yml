@@ -119,12 +119,15 @@ workflows:
     jobs:
       - lint
       - pack:
+          context: dev
           requires:
             - lint
       - publish-dev:
+          context: dev
           requires:
             - pack
       - increment:
+          context: dev
           requires:
             - publish-dev
           filters:
