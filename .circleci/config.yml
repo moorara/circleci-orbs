@@ -49,7 +49,7 @@ jobs:
             COMMIT_RANGE=$(echo $CIRCLE_COMPARE_URL | sed 's:^.*/compare/::g')
 
             # Create the top-level directory, so persist_to_workspace does not fail
-            mkdir -pv "orbs/${orbname}"
+            mkdir -pv orbs
 
             for orbpath in src/*/; do
               orbname=$(basename $orbpath)
