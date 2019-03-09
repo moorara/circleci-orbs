@@ -7,7 +7,8 @@
 #   - https://api.slack.com/docs/interactive-message-field-guide
 #
 
-description: the command for sending deployment notifications to Slack
+description: |
+  Send deployment notifications to Slack.
 
 parameters:
   webhook:

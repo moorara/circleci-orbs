@@ -2,7 +2,8 @@
 # Ref: https://semver.org
 #
 
-description: the command for updating VERSION file
+description: |
+  Update VERSION file with a semantic version.
 
 parameters:
   prerelease:
