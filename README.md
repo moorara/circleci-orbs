@@ -9,9 +9,6 @@ A collection of common and reusable [CircleCI Orbs](https://circleci.com/orbs).
 
   - https://circleci.com/docs/2.0/creating-orbs
   - https://circleci.com/docs/2.0/configuration-reference
-  - https://circleci.com/orbs/registry/orb/circleci/circleci-cli
-  - https://circleci.com/orbs/registry/orb/circleci/build-tools
-  - https://circleci.com/orbs/registry/orb/circleci/orb-tools
 
 ### Summary
 

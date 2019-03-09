@@ -1,7 +1,11 @@
 #
 # REF:
-#   - https://github.com/CircleCI-Public/orb-tools-orb
-#   - https://github.com/CircleCI-Public/circleci-orbs
+#   https://circleci.com/orbs/registry/orb/circleci/circleci-cli
+#   https://circleci.com/orbs/registry/orb/circleci/orb-tools
+#   https://circleci.com/orbs/registry/orb/circleci/build-tools
+#   https://circleci.com/orbs/registry/orb/iynere/compare-url
+#   https://github.com/CircleCI-Public/orb-tools-orb
+#   https://github.com/CircleCI-Public/circleci-orbs
 #
 
 version: 2.1
