@@ -11,45 +11,124 @@
 version: 2.1
 
 orbs:
-  orb-tools: circleci/orb-tools@8.3.0
+  cli: circleci/circleci-cli@0.1.3
+  compare-url: iynere/compare-url@0.4.9
+
+jobs:
+
+  lint:
+    docker:
+      - image: moorara/tools
+    steps:
+      - checkout
+      - run:
+          name: Ensure .yamllint
+          command: |
+            touch .yamllint || true
+            cat > .yamllint \<< EOF
+            extends: relaxed
+            rules: 
+              line-length: 
+                max: 200 
+                allow-non-breakable-inline-mappings: true
+            EOF
+      - run:
+          name: Linting Orbs
+          command: yamllint src
+
+  pack:
+    executor: cli/default
+    steps:
+      - checkout
+      - compare-url/reconstruct:
+          circle-token: CIRCLECI_API_TOKEN
+      - run:
+          name: Pack Modified Orbs
+          command: |
+            CIRCLE_COMPARE_URL=$(cat CIRCLE_COMPARE_URL.txt)
+            COMMIT_RANGE=$(echo $CIRCLE_COMPARE_URL | sed 's:^.*/compare/::g')
+
+            # Create the top-level directory, so persist_to_workspace does not fail
+            mkdir -pv "orbs/${orbname}"
+
+            for orbpath in src/*/; do
+              orbname=$(basename $orbpath)
+              if [[ $(git diff $COMMIT_RANGE --name-status | grep "$orbname") ]]; then
+                # Create a sub-directory for the orb
+                mkdir -pv "orbs/${orbname}"
+
+                echo -e "\n\033[1;36m Packing orb ${orbname} ... \033[0m"
+                circleci config pack "${orbpath}" > "orbs/${orbname}/orb.yml"
+
+                echo -e "\n\033[1;36m Validating orb ${orbname} ... \033[0m"
+                circleci orb validate "orbs/${orbname}/orb.yml"
+              else
+                echo -e "\033[1;33m SKIPPED: orb ${orbname} not modified. \033[0m"
+              fi
+            done
+      - store_artifacts:
+          path: orbs/
+      - persist_to_workspace:
+          root: .
+          paths:
+            - orbs
+
+  publish-dev:
+    executor: cli/default
+    steps:
+      - checkout
+      - attach_workspace:
+          at: .
+      - run:
+          name: Publish Modified Orbs
+          command: |
+            namespace="moorara"
+            version="dev:${CIRCLE_SHA1:0:7}"
+
+            for orbpath in orbs/*/; do
+              if [[ -d $orbpath ]]; then
+                orbname=$(basename $orbpath)
+
+                echo -e "\n\033[1;36m Publishing orb ${orbname} ... \033[0m"
+                circleci orb publish "${orbpath}/orb.yml" "${namespace}/${orbname}@${version}" --token "$CIRCLECI_API_TOKEN"
+              fi
+            done
+
+  increment:
+    executor: cli/default
+    steps:
+      - checkout
+      - attach_workspace:
+          at: .
+      - run:
+          name: Increment Modified Orbs
+          command: |
+            namespace="moorara"
+            version="dev:${CIRCLE_SHA1:0:7}"
+
+            for orbpath in orbs/*/; do
+              if [[ -d $orbpath ]]; then
+                orbname=$(basename $orbpath)
+                segment="patch"
+
+                echo -e "\n\033[1;36m Publishing orb ${orbname} ... \033[0m"
+                circleci orb publish increment "${orbpath}/orb.yml" "${namespace}/${orbname}" "$segment" --token "$CIRCLECI_API_TOKEN"
+              fi
+            done
 
 workflows:
-  devops-orb:
+  publish-orbs:
     jobs:
-      - orb-tools/lint:
-          name: devops-lint
-      - orb-tools/pack:
-          name: devops-pack
-          source-dir: src/devops
-          destination-orb-path: src/devops/orb.yml
-          validate: true
-          workspace-path: src/devops/orb.yml
-          artifact-path: src/devops/orb.yml
+      - lint
+      - pack:
           requires:
-            - devops-lint
-      - orb-tools/publish:
-          name: devops-publish
-          checkout: false
-          attach-workspace: true
-          workspace-root: .
-          validate: true
-          orb-path: src/devops/orb.yml
-          orb-ref: moorara/devops@dev:${CIRCLE_SHA1:0:7}
-          publish-token-variable: CIRCLECI_API_TOKEN
+            - lint
+      - publish-dev:
           requires:
-            - devops-pack
-      - orb-tools/increment:
-          name: devops-increment
-          checkout: false
-          attach-workspace: true
-          workspace-root: .
-          validate: true
-          orb-path: src/devops/orb.yml
-          orb-ref: moorara/devops
-          segment: patch
-          publish-token-variable: CIRCLECI_API_TOKEN
+            - pack
+      - increment:
           requires:
-            - devops-publish
+            - publish-dev
           filters:
             branches:
               only: master

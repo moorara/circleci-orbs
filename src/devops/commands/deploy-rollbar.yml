@@ -3,7 +3,8 @@
 #   - https://docs.rollbar.com/reference#post-deploy
 #
 
-description: the command for reporting deployment information to Rollbar
+description: |
+  Report deployment information to Rollbar.
 
 parameters:
   access_token:
