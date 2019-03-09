@@ -1,0 +1,55 @@
+#
+# REF:
+#   https://circleci.com/orbs/registry/orb/circleci/circleci-cli
+#   https://circleci.com/orbs/registry/orb/circleci/orb-tools
+#   https://circleci.com/orbs/registry/orb/circleci/build-tools
+#   https://circleci.com/orbs/registry/orb/iynere/compare-url
+#   https://github.com/CircleCI-Public/orb-tools-orb
+#   https://github.com/CircleCI-Public/circleci-orbs
+#
+
+version: 2.1
+
+orbs:
+  orb-tools: circleci/orb-tools@8.3.0
+
+workflows:
+  devops-orb:
+    jobs:
+      - orb-tools/lint:
+          name: devops-lint
+      - orb-tools/pack:
+          name: devops-pack
+          source-dir: src/devops
+          destination-orb-path: src/devops/orb.yml
+          validate: true
+          workspace-path: src/devops/orb.yml
+          artifact-path: src/devops/orb.yml
+          requires:
+            - devops-lint
+      - orb-tools/publish:
+          name: devops-publish
+          checkout: false
+          attach-workspace: true
+          workspace-root: .
+          validate: true
+          orb-path: src/devops/orb.yml
+          orb-ref: moorara/devops@dev:${CIRCLE_SHA1:0:7}
+          publish-token-variable: CIRCLECI_API_TOKEN
+          requires:
+            - devops-pack
+      - orb-tools/increment:
+          name: devops-increment
+          checkout: false
+          attach-workspace: true
+          workspace-root: .
+          validate: true
+          orb-path: src/devops/orb.yml
+          orb-ref: moorara/devops
+          segment: patch
+          publish-token-variable: CIRCLECI_API_TOKEN
+          requires:
+            - devops-publish
+          filters:
+            branches:
+              only: master
