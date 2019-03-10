@@ -46,13 +46,13 @@ jobs:
           name: Pack Modified Orbs
           command: |
             CIRCLE_COMPARE_URL=$(cat CIRCLE_COMPARE_URL.txt)
-            COMMIT_RANGE=$(echo $CIRCLE_COMPARE_URL | sed 's:^.*/compare/::g')
+            COMMIT_RANGE=$(echo "$CIRCLE_COMPARE_URL" | sed 's:^.*/compare/::g')
 
             # Create the top-level directory, so persist_to_workspace does not fail
             mkdir -pv orbs
 
             for orbpath in src/*/; do
-              orbname=$(basename $orbpath)
+              orbname=$(basename "$orbpath")
               if [[ $(git diff $COMMIT_RANGE --name-status | grep "$orbname") ]]; then
                 # Create a sub-directory for the orb
                 mkdir -pv "orbs/${orbname}"
@@ -85,8 +85,8 @@ jobs:
             version="dev:${CIRCLE_SHA1:0:7}"
 
             for orbpath in orbs/*/; do
-              if [[ -d $orbpath ]]; then
-                orbname=$(basename $orbpath)
+              if [[ -d "$orbpath" ]]; then
+                orbname=$(basename "$orbpath")
 
                 echo -e "\n\033[1;36m Publishing orb ${orbname} ... \033[0m"
                 circleci orb publish "${orbpath}/orb.yml" "${namespace}/${orbname}@${version}" --token "$CIRCLECI_API_TOKEN"
@@ -105,8 +105,8 @@ jobs:
             version="dev:${CIRCLE_SHA1:0:7}"
 
             for orbpath in orbs/*/; do
-              if [[ -d $orbpath ]]; then
-                orbname=$(basename $orbpath)
+              if [[ -d "$orbpath" ]]; then
+                orbname=$(basename "$orbpath")
                 segment="patch"
 
                 echo -e "\n\033[1;36m Publishing orb ${orbname} ... \033[0m"
