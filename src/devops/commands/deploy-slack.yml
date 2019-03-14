@@ -38,10 +38,27 @@ steps:
   - run:
       name: Send Deployment Notification To Slack
       command: |
+        git_tag=$(git tag --list --points-at HEAD)
         commit_sha=$(git rev-parse --verify HEAD)
         commit_message=$(git log --oneline -n1 | cut -c9-)
         github_user_name=$(curl -s "https://api.github.com/users/$CIRCLE_USERNAME" | jq -r '.name')
         github_avatar_url=$(curl -s "https://api.github.com/users/$CIRCLE_USERNAME" | jq -r '.avatar_url')
+
+        # Feature branch / Pull request
+        if [[ -n "$CIRCLE_PULL_REQUEST" ]]; then
+          pr_number=$(echo $CIRCLE_PULL_REQUEST | rev | cut -d '/' -f1 | rev)
+          title="Pull Request: $commit_message"
+          title_link="$CIRCLE_PULL_REQUEST"
+        # Release Tag
+        elif [[ "$CIRCLE_BRANCH" == "master" && "$git_tag" =~ ^v[0-9]+\.[0-9]+\.[0-9]+$ ]]; then
+          title="Release Changelog: $git_tag"
+          title_link="https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME/releases/tag/$git_tag"
+        # Default
+        else
+          title="Commit Diff: $commit_message"
+          title_link="https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME/commit/$CIRCLE_SHA1"
+        fi
+
         curl \
           -H 'Content-type: application/json' \
           -X POST "<<parameters.webhook>>" \
@@ -53,8 +70,8 @@ steps:
                 \"author_name\": \"$github_user_name\",
                 \"author_link\": \"https://github.com/$CIRCLE_USERNAME\",
                 \"author_icon\": \"$github_avatar_url\",
-                \"title\": \"$commit_message\",
-                \"title_link\": \"https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME/commit/$CIRCLE_SHA1\",
+                \"title\": \"$title\",
+                \"title_link\": \"$title_link\",
                 \"text\": \"Deployed \`<<parameters.artifact>>\` version \`<<parameters.version>>\` in \`<<parameters.environment>>/<<parameters.region>>\`\",
                 \"actions\": [
                   <<# parameters.include_actions >>
