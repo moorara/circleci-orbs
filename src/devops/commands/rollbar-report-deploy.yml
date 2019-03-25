@@ -1,6 +1,7 @@
 #
 # Ref:
-#   - https://docs.rollbar.com/reference#post-deploy
+#   https://docs.rollbar.com/reference#post-deploy
+#   https://docs.rollbar.com/reference#update-a-deploy
 #
 
 description: |
