@@ -13,7 +13,7 @@ usage:
         dockerhub_username: "$DOCKERHUB_USERNAME"
         dockerhub_password: "$DOCKERHUB_PASSWORD"
       steps:
-        - devops/deploy-rollbar:
+        - devops/rollbar-report-deploy:
             access_token: "$ROLLBAR_TOKEN"
             environment: "production"
             status: "succeeded"

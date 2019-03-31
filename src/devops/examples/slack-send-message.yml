@@ -13,9 +13,8 @@ usage:
         dockerhub_username: "$DOCKERHUB_USERNAME"
         dockerhub_password: "$DOCKERHUB_PASSWORD"
       steps:
-        - devops/deploy-slack:
+        - devops/slack-send-message:
             webhook: "$SLACK_WEBHOOK"
-            color: "#20bf55"
             environment: "production"
             region: "us-east-1"
             artifact: "user-service"
