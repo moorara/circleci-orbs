@@ -14,7 +14,7 @@ usage:
         dockerhub_password: "$DOCKERHUB_PASSWORD"
       steps:
         - checkout
-        - devops/set-version
+        - devops/create-semver
         - go build
 
   workflows:
