@@ -1,0 +1,55 @@
+#
+# Ref:
+#   https://github.com/protocolbuffers/protobuf
+#
+
+description: the command for installing all required tools for protocol buffers and gRPC
+
+parameters:
+  protoc_release:
+    description: the version (GitHub tag) of protocol buffers compiler to be installed. If no version specified, the latest release will be installed.
+    type: string
+    default: ""
+
+steps:
+  - run:
+      name: Install gRPC Tools
+      command: |
+        # Install protoc first
+
+        if [ -n "<<parameters.protoc_release>>" ]; then
+          protoc_release="<<parameters.protoc_release>>"
+        fi
+
+        protoc_release=${protoc_release:-$(curl -s https://api.github.com/repos/protocolbuffers/protobuf/releases/latest | jq -r '.tag_name')}
+        protoc_version=${protoc_release#v}
+
+        echo -e '\033[1;32m' "Installing protoc ${protoc_release} ..." '\033[0m'
+
+        os=linux
+        arch=x86_64
+        archive=./protoc.zip
+        path=protoc
+
+        curl -fsSL "https://github.com/protocolbuffers/protobuf/releases/download/${protoc_release}/protoc-${protoc_version}-${os}-${arch}.zip" -o ${archive}
+        unzip -d ${path} ${archive}
+        mv "${path}/bin/protoc" /usr/local/bin/protoc
+        mv "${path}/include/google" /usr/local/include/
+        chmod +x /usr/local/bin/protoc
+        rm -rf ${archive} ${path}
+
+        echo -e '\033[1;32m' "protoc ${protoc_release} installed successfully!" '\033[0m'
+
+        # Install other required tools
+
+        echo -e '\033[1;32m' "Installing grpc ..." '\033[0m'
+        go get -u google.golang.org/grpc
+
+        echo -e '\033[1;32m' "Installing protoc-gen-go ..." '\033[0m'
+        go get -u github.com/golang/protobuf/protoc-gen-go
+
+        echo -e '\033[1;32m' "Installing protoc-gen-grpc-gateway ..." '\033[0m'
+        go get -u github.com/grpc-ecosystem/grpc-gateway/protoc-gen-grpc-gateway
+
+        echo -e '\033[1;32m' "Installing protoc-gen-swagger ..." '\033[0m'
+        go get -u github.com/grpc-ecosystem/grpc-gateway/protoc-gen-swagger
