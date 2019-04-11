@@ -1,0 +1,53 @@
+#
+# Ref:
+#   https://kubernetes.io/docs/reference/kubectl/cheatsheet
+#   https://stedolan.github.io/jq/manual
+#
+
+description: the command for verifying a deployment to Kubernetes
+
+parameters:
+  deployment_name:
+    description: the name of Kubernetes deployment
+    type: string
+  deployment_image:
+    description: the image for Kubernetes deployment (Docker image name and tag)
+    type: string
+  timeout:
+    description: the maximum time to wait for Kubernetes deployment in seconds
+    type: integer
+    default: 90
+
+steps:
+  - run:
+      name: Verify Deployment
+      command: |
+        # Assuming kubectl is set up and has access to the Kubernetes cluster
+
+        name="<<parameters.deployment_name>>"
+        image="<<parameters.deployment_image>>"
+        timeout=<<parameters.timeout>>
+        counter=0
+
+        # Continue only if the deployment exists
+        if kubectl get deployment $name &>/dev/null; then
+          until (
+            kubectl get pod --selector name=$name -o json | \
+            jq --exit-status ".items[] | select(.spec.containers[0].image == \"$image\") | .status.conditions[] | select(.type == \"Ready\" and .status == \"True\")"
+          )
+          do
+            echo -e "\033[1;36mWAITING FOR PODS TO BE READY ...\033[0m"
+            sleep 5
+            counter=$((counter+5))
+            if (( counter >= timeout )); then
+              echo -e "\033[1;31m"
+              echo "DEPLOYMENT FAILED!"
+              echo "  deployment:  $name"
+              echo "  image:       $image"
+              echo -e "\033[0m"
+              exit $counter
+            fi
+          done
+        else
+          echo -e "\033[1;33mSKIPPED: not a deployment\033[0m"
+        fi
