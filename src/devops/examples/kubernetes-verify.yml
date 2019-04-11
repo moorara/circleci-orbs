@@ -1,0 +1,24 @@
+description: verifying a deployment to Kubernetes to see if it was successful or not (smoke test)
+
+usage:
+  version: 2.1
+
+  orbs:
+    devops: moorara/devops@0.0.0
+
+  jobs:
+    deploy:
+      executor:
+        name: devops/tools
+        dockerhub_username: "$DOCKERHUB_USERNAME"
+        dockerhub_password: "$DOCKERHUB_PASSWORD"
+      steps:
+        - deploy-step
+        - devops/kubernetes-verify:
+            deployment_name: "user-service"
+            deployment_image: "username/user-service:0.1.0"
+
+  workflows:
+    your-workflow:
+      jobs:
+        - deploy
