@@ -69,13 +69,13 @@ steps:
           -X POST "<<parameters.webhook>>" \
           --data \
             "{
-              \"text\": \"Deployed <<parameters.artifact>> version <<parameters.version>> in <<parameters.environment>>/<<parameters.region>>\",
+              \"text\": \"Deployed <<parameters.artifact>> version <<parameters.version>> to <<parameters.environment>>/<<parameters.region>>\",
               \"blocks\": [
                 {
                   \"type\": \"section\",
                   \"text\": {
                     \"type\": \"mrkdwn\",
-                      \"text\": \"Deployed \`<<parameters.artifact>>\` version \`<<parameters.version>>\` in \`<<parameters.environment>>/<<parameters.region>>\`\n*<$title_link|$title>*\"
+                      \"text\": \"Deployed \`<<parameters.artifact>>\` version \`<<parameters.version>>\` to \`<<parameters.environment>>/<<parameters.region>>\`\n*<$title_link|$title>*\"
                   }
                 },
                 {
