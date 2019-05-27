@@ -7,10 +7,10 @@
 description: the command for verifying a deployment to Kubernetes
 
 parameters:
-  deployment_name:
+  pod_name:
     description: the name of Kubernetes deployment
     type: string
-  deployment_image:
+  image_name:
     description: the image for Kubernetes deployment (Docker image name and tag)
     type: string
   timeout:
@@ -24,8 +24,8 @@ steps:
       command: |
         # Assuming kubectl is set up and has access to the Kubernetes cluster
 
-        name="<<parameters.deployment_name>>"
-        image="<<parameters.deployment_image>>"
+        name="<<parameters.pod_name>>"
+        image="<<parameters.image_name>>"
         timeout=<<parameters.timeout>>
         counter=0
 
