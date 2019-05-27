@@ -15,8 +15,8 @@ usage:
       steps:
         - deploy-step
         - devops/kubernetes-verify:
-            deployment_name: "user-service"
-            deployment_image: "username/user-service:0.1.0"
+            pod_name: "user-service"
+            image_name: "username/user-service:0.1.0"
 
   workflows:
     your-workflow:
