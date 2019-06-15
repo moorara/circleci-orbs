@@ -45,7 +45,7 @@ steps:
       command: |
         git_tag=$(git tag --list --points-at HEAD)
         commit_sha=$(git rev-parse --verify HEAD)
-        commit_message=$(git log --oneline -n1 | cut -c9-)
+        commit_message=$(git log --oneline -n1 | cut -c9- | sed 's/\"/\\\"/g')
         github_user_name=$(curl -s "https://api.github.com/users/$CIRCLE_USERNAME" | jq -r '.name')
         github_avatar_url=$(curl -s "https://api.github.com/users/$CIRCLE_USERNAME" | jq -r '.avatar_url')
 
