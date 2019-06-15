@@ -1,0 +1,36 @@
+#
+# Ref: https://github.com/golangci/golangci-lint
+#
+
+description: the job for running Golang linters
+
+parameters:
+  circle-token:
+    description: the name of environment variable containing CircleCI API token for reconstructing the compare URL
+    type: string
+  all-linters:
+    description: whether or not to enable all linters
+    type: boolean
+    default: true
+  only-new:
+    description: whether or not to only lint new changes
+    type: boolean
+    default: true
+
+docker:
+  - image: golangci/golangci-lint
+
+steps:
+  - checkout
+  - compare-url/reconstruct:
+      circle-token: <<parameters.circle-token>>
+  - run:
+      name: Linting
+      command: |
+        # Get commit range of new changes
+        CIRCLE_COMPARE_URL=$(cat CIRCLE_COMPARE_URL.txt)
+        COMMIT_RANGE=$(echo "$CIRCLE_COMPARE_URL" | sed 's:^.*/compare/::g')
+
+        golangci-lint run \
+          <<#parameters.all-linters>>--enable-all<</parameters.all-linters>> \
+          <<#parameters.only-new>>--new-from-rev $COMMIT_RANGE<</parameters.only-new>>
