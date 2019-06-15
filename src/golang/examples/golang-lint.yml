@@ -1,0 +1,14 @@
+description: Linting a Go repo
+
+usage:
+  version: 2.1
+
+  orbs:
+    golang: moorara/golang@0.0.0
+
+  workflows:
+    lint:
+      jobs:
+        - golang/golang-lint:
+            name: lint
+            circle-token: CIRCLECI_API_TOKEN

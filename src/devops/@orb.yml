@@ -1,8 +1,5 @@
 version: 2.1
 
 description: |
-  A collection of common CircleCI Orbs.
+  A collection of common CircleCI Orbs for DevOps purposes.
   https://github.com/moorara/circleci-orbs
-
-orbs:
-  compare-url: iynere/compare-url@1.1.0

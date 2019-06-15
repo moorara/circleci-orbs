@@ -1,0 +1,23 @@
+description: installing all tools required for Protocol Buffers and gRPC
+
+usage:
+  version: 2.1
+
+  orbs:
+    golang: moorara/golang@0.0.0
+
+  jobs:
+    build:
+      executor:
+        name: golang/golang
+        dockerhub_username: "$DOCKERHUB_USERNAME"
+        dockerhub_password: "$DOCKERHUB_PASSWORD"
+      steps:
+        - checkout
+        - golang/install-grpc-tools:
+            protoc_release: v3.7.1
+
+  workflows:
+    your-workflow:
+      jobs:
+        - build
