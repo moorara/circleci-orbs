@@ -107,7 +107,7 @@ jobs:
             for orbpath in orbs/*/; do
               if [[ -d "$orbpath" ]]; then
                 orbname=$(basename "$orbpath")
-                segment="minor"
+                segment="patch"
 
                 echo -e "\n\033[1;36m Publishing orb ${orbname} ... \033[0m"
                 circleci orb publish increment "${orbpath}/orb.yml" "${namespace}/${orbname}" "$segment" --token "$CIRCLECI_API_TOKEN"
