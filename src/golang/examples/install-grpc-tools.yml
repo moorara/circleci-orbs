@@ -4,17 +4,17 @@ usage:
   version: 2.1
 
   orbs:
-    devops: moorara/devops@0.0.0
+    golang: moorara/golang@0.0.0
 
   jobs:
     build:
       executor:
-        name: devops/golang
+        name: golang/golang
         dockerhub_username: "$DOCKERHUB_USERNAME"
         dockerhub_password: "$DOCKERHUB_PASSWORD"
       steps:
         - checkout
-        - devops/install-grpc-tools:
+        - golang/install-grpc-tools:
             protoc_release: v3.7.1
 
   workflows:

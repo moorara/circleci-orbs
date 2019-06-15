@@ -1,5 +1,7 @@
 [![Build Status][circleci-image]][circleci-url]
 [![Build Status][devops-orb-image]][devops-orb-url]
+[![Build Status][golang-orb-image]][golang-orb-url]
+[![Build Status][node-orb-image]][node-orb-url]
 
 # CircleCI Orbs
 
@@ -39,3 +41,7 @@ A collection of common and reusable [CircleCI Orbs](https://circleci.com/orbs).
 [circleci-image]: https://circleci.com/gh/moorara/circleci-orbs/tree/master.svg?style=shield
 [devops-orb-url]: https://circleci.com/orbs/registry/orb/moorara/devops
 [devops-orb-image]: https://img.shields.io/endpoint.svg?url=https://badges.circleci.io/orb/moorara/devops
+[golang-orb-url]: https://circleci.com/orbs/registry/orb/moorara/golang
+[golang-orb-image]: https://img.shields.io/endpoint.svg?url=https://badges.circleci.io/orb/moorara/golang
+[node-orb-url]: https://circleci.com/orbs/registry/orb/moorara/node
+[node-orb-image]: https://img.shields.io/endpoint.svg?url=https://badges.circleci.io/orb/moorara/node
