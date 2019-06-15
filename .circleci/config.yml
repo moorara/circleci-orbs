@@ -76,6 +76,7 @@ jobs:
   publish-dev:
     executor: cli/default
     steps:
+      - checkout
       - attach_workspace:
           at: .
       - run:
@@ -96,6 +97,7 @@ jobs:
   increment:
     executor: cli/default
     steps:
+      - checkout
       - attach_workspace:
           at: .
       - run:

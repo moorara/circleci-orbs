@@ -1,5 +1,5 @@
 version: 2.1
 
 description: |
-  A collection of common CircleCI Orbs for DevOps purposes.
+  A collection of CircleCI Orbs for DevOps purposes.
   https://github.com/moorara/circleci-orbs
