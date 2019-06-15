@@ -1,7 +1,7 @@
 version: 2.1
 
 description: |
-  A collection of common CircleCI Orbs for Go programming language.
+  A collection of CircleCI Orbs for Go programming language.
   https://github.com/moorara/circleci-orbs
 
 orbs:
