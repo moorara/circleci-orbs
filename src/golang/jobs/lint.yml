@@ -16,6 +16,18 @@ parameters:
     description: whether or not to only lint new changes
     type: boolean
     default: true
+  timeout:
+    description: exit code when issues were found
+    type: string
+    default: "1m"
+  exit-code:
+    description: exit code when issues were found
+    type: integer
+    default: 1
+  out-format:
+    description: output format (colored-line-number, line-number, json, tab, checkstyle, code-climate, junit-xml)
+    type: string
+    default: colored-line-number
 
 docker:
   - image: golangci/golangci-lint
@@ -30,7 +42,13 @@ steps:
         # Get commit range of new changes
         CIRCLE_COMPARE_URL=$(cat CIRCLE_COMPARE_URL.txt)
         COMMIT_RANGE=$(echo "$CIRCLE_COMPARE_URL" | sed 's:^.*/compare/::g')
+        echo $COMMIT_RANGE
 
         golangci-lint run \
           <<#parameters.all-linters>>--enable-all<</parameters.all-linters>> \
-          <<#parameters.only-new>>--new-from-rev $COMMIT_RANGE<</parameters.only-new>>
+          <<#parameters.only-new>>--new-from-rev $COMMIT_RANGE<</parameters.only-new>> \
+          --deadline <<parameters.timeout>> \
+          --issues-exit-code <<parameters.exit-code>> \
+          --out-format <<parameters.out-format>>
+  - store_artifacts:
+      path: CIRCLE_COMPARE_URL.txt

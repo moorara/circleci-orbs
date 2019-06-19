@@ -9,6 +9,5 @@ usage:
   workflows:
     lint:
       jobs:
-        - golang/golang-lint:
-            name: lint
+        - golang/lint:
             circle-token: CIRCLECI_API_TOKEN
