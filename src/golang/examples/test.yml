@@ -1,4 +1,4 @@
-description: linting a Go repo
+description: running Go tests and generating coverage reports
 
 usage:
   version: 2.1
@@ -9,5 +9,4 @@ usage:
   workflows:
     your-workflow:
       jobs:
-        - golang/lint:
-            circle-token: CIRCLECI_API_TOKEN
+        - golang/test

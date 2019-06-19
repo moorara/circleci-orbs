@@ -2,7 +2,7 @@
 # Ref: https://github.com/golangci/golangci-lint
 #
 
-description: the job for running Golang linters
+description: the job for running Go linters
 
 parameters:
   circle-token:
