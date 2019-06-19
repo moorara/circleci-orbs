@@ -14,8 +14,8 @@ usage:
         dockerhub_password: "$DOCKERHUB_PASSWORD"
       steps:
         - checkout
-        - golang/install-grpc-tools:
-            protoc_release: v3.7.1
+        - golang/install-grpc:
+            protoc_release: v3.8.0
 
   workflows:
     your-workflow:
