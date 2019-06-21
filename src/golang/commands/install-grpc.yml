@@ -43,13 +43,13 @@ steps:
         # Install other required tools
 
         echo -e '\033[1;32m' "Installing grpc ..." '\033[0m'
-        go get -u google.golang.org/grpc
+        go get -u google.golang.org/grpc@latest
 
         echo -e '\033[1;32m' "Installing protoc-gen-go ..." '\033[0m'
-        go get -u github.com/golang/protobuf/protoc-gen-go
+        go get -u github.com/golang/protobuf/protoc-gen-go@latest
 
         echo -e '\033[1;32m' "Installing protoc-gen-grpc-gateway ..." '\033[0m'
-        go get -u github.com/grpc-ecosystem/grpc-gateway/protoc-gen-grpc-gateway
+        go get -u github.com/grpc-ecosystem/grpc-gateway/protoc-gen-grpc-gateway@latest
 
         echo -e '\033[1;32m' "Installing protoc-gen-swagger ..." '\033[0m'
-        go get -u github.com/grpc-ecosystem/grpc-gateway/protoc-gen-swagger
+        go get -u github.com/grpc-ecosystem/grpc-gateway/protoc-gen-swagger@latest
