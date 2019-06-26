@@ -1,0 +1,61 @@
+#
+# Ref:
+#   https://tip.golang.org/cmd/go/#hdr-Testing_flags
+#
+
+description: the command for running Go tests and generating coverage reports
+
+parameters:
+  short:
+    description: whether or not to tell long-running tests to shorten their run time
+    type: boolean
+    default: false
+  race:
+    description: whether or not to enable data race detection
+    type: boolean
+    default: true
+  cover:
+    description: whether or not to generate coverage profile and report
+    type: boolean
+    default: true
+  covermode:
+    description: the mode for coverage analysis (set, count, atomic)
+    type: string
+    default: atomic
+  coverprofile:
+    description: the name of file for coverage profile
+    type: string
+    default: c.out
+
+steps:
+  - run:
+      name: Getting Modules
+      command: go get ./...
+  - run:
+      name: Running Tests
+      command: |
+        go test \
+          <<#parameters.short>>--short<</parameters.short>> \
+          <<#parameters.race>>--race<</parameters.race>> \
+          ./...
+  - when:
+      condition: <<parameters.cover>>
+      steps:
+        - run:
+            name: Generating Coverage
+            command: |
+              go test \
+                -cover \
+                -covermode <<parameters.covermode>> \
+                -coverprofile <<parameters.coverprofile>> \
+                ./...
+              go tool cover -html=<<parameters.coverprofile>> -o cover.html
+        - store_artifacts:
+            path: <<parameters.coverprofile>>
+        - store_artifacts:
+            path: cover.html
+        - persist_to_workspace:
+            root: .
+            paths:
+              - <<parameters.coverprofile>>
+              - cover.html

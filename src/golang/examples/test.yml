@@ -6,7 +6,15 @@ usage:
   orbs:
     golang: moorara/golang@0.0.0
 
+  test:
+    build:
+      docker:
+        - image: golang
+      steps:
+        - checkout
+        - golang/test
+
   workflows:
     your-workflow:
       jobs:
-        - golang/test
+        - test
