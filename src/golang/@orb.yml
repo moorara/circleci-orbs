@@ -5,4 +5,4 @@ description: |
   https://github.com/moorara/circleci-orbs
 
 orbs:
-  compare-url: iynere/compare-url@1.1.0
+  compare-url: iynere/compare-url@1.2.0
