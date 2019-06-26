@@ -47,9 +47,3 @@ steps:
 
         echo -e '\033[1;32m' "Installing protoc-gen-go ..." '\033[0m'
         go get -u github.com/golang/protobuf/protoc-gen-go
-
-        echo -e '\033[1;32m' "Installing protoc-gen-grpc-gateway ..." '\033[0m'
-        go get -u github.com/grpc-ecosystem/grpc-gateway/protoc-gen-grpc-gateway
-
-        echo -e '\033[1;32m' "Installing protoc-gen-swagger ..." '\033[0m'
-        go get -u github.com/grpc-ecosystem/grpc-gateway/protoc-gen-swagger
