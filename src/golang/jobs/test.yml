@@ -1,5 +1,6 @@
 #
-# Ref: https://tip.golang.org/cmd/go/#hdr-Testing_flags
+# Ref:
+#   https://tip.golang.org/cmd/go/#hdr-Testing_flags
 #
 
 description: the job for running Go tests and generating coverage reports
@@ -31,34 +32,9 @@ docker:
 
 steps:
   - checkout
-  - run:
-      name: Getting Modules
-      command: go get ./...
-  - run:
-      name: Running Tests
-      command: |
-        go test \
-          <<#parameters.short>>--short<</parameters.short>> \
-          <<#parameters.race>>--race<</parameters.race>> \
-          ./...
-  - when:
-      condition: <<parameters.cover>>
-      steps:
-        - run:
-            name: Generating Coverage
-            command: |
-              go test \
-                -cover \
-                -covermode <<parameters.covermode>> \
-                -coverprofile <<parameters.coverprofile>> \
-                ./...
-              go tool cover -html=<<parameters.coverprofile>> -o cover.html
-        - store_artifacts:
-            path: <<parameters.coverprofile>>
-        - store_artifacts:
-            path: cover.html
-        - persist_to_workspace:
-            root: .
-            paths:
-              - <<parameters.coverprofile>>
-              - cover.html
+  - test:
+      short: "<<parameters.short>>"
+      race: "<<parameters.race>>"
+      cover: "<<parameters.cover>>"
+      covermode: "<<parameters.covermode>>"
+      coverprofile: "<<parameters.coverprofile>>"
