@@ -40,8 +40,8 @@ A collection of common and reusable [CircleCI Orbs](https://circleci.com/orbs).
 [circleci-url]: https://circleci.com/gh/moorara/circleci-orbs/tree/master
 [circleci-image]: https://circleci.com/gh/moorara/circleci-orbs/tree/master.svg?style=shield
 [devops-orb-url]: https://circleci.com/orbs/registry/orb/moorara/devops
-[devops-orb-image]: https://img.shields.io/endpoint.svg?url=https://badges.circleci.io/orb/moorara/devops
+[devops-orb-image]: https://img.shields.io/endpoint.svg?label=devops&url=https://badges.circleci.io/orb/moorara/devops
 [golang-orb-url]: https://circleci.com/orbs/registry/orb/moorara/golang
-[golang-orb-image]: https://img.shields.io/endpoint.svg?url=https://badges.circleci.io/orb/moorara/golang
+[golang-orb-image]: https://img.shields.io/endpoint.svg?label=golang&url=https://badges.circleci.io/orb/moorara/golang
 [node-orb-url]: https://circleci.com/orbs/registry/orb/moorara/node
-[node-orb-image]: https://img.shields.io/endpoint.svg?url=https://badges.circleci.io/orb/moorara/node
+[node-orb-image]: https://img.shields.io/endpoint.svg?label=node&url=https://badges.circleci.io/orb/moorara/node
