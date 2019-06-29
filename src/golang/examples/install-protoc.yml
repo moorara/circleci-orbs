@@ -1,4 +1,4 @@
-description: installing all tools required for Protocol Buffers and gRPC
+description: installing Protocol Buffers compiler
 
 usage:
   version: 2.1
@@ -14,8 +14,7 @@ usage:
         dockerhub_password: "$DOCKERHUB_PASSWORD"
       steps:
         - checkout
-        - golang/install-grpc:
-            protoc_release: v3.8.0
+        - golang/install-protoc
 
   workflows:
     your-workflow:

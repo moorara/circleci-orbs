@@ -3,7 +3,7 @@
 #   https://github.com/protocolbuffers/protobuf
 #
 
-description: the command for installing all required tools for protocol buffers and gRPC
+description: the command for installing Protocol Buffers compiler
 
 parameters:
   protoc_release:
@@ -13,10 +13,8 @@ parameters:
 
 steps:
   - run:
-      name: Install gRPC Tools
+      name: Installing protoc
       command: |
-        # Install protoc first
-
         if [ -n "<<parameters.protoc_release>>" ]; then
           protoc_release="<<parameters.protoc_release>>"
         fi
@@ -39,11 +37,3 @@ steps:
         rm -rf ${archive} ${path}
 
         echo -e '\033[1;32m' "protoc ${protoc_release} installed successfully!" '\033[0m'
-
-        # Install other required tools
-
-        echo -e '\033[1;32m' "Installing grpc ..." '\033[0m'
-        go get -u google.golang.org/grpc
-
-        echo -e '\033[1;32m' "Installing protoc-gen-go ..." '\033[0m'
-        go get -u github.com/golang/protobuf/protoc-gen-go
