@@ -55,7 +55,7 @@ steps:
           title="Pull Request: $commit_message"
           title_link="$CIRCLE_PULL_REQUEST"
         # Release Tag
-        elif [[ "$CIRCLE_BRANCH" == "master" && "$git_tag" =~ ^v[0-9]+\.[0-9]+\.[0-9]+$ ]]; then
+        elif [[ "$CIRCLE_BRANCH" == "main" && "$git_tag" =~ ^v[0-9]+\.[0-9]+\.[0-9]+$ ]]; then
           title="Release Changelog: $git_tag"
           title_link="https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME/releases/tag/$git_tag"
         # Default

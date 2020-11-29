@@ -27,9 +27,9 @@ jobs:
             touch .yamllint || true
             cat > .yamllint \<< EOF
             extends: relaxed
-            rules: 
-              line-length: 
-                max: 200 
+            rules:
+              line-length:
+                max: 200
                 allow-non-breakable-inline-mappings: true
             EOF
       - run:
@@ -134,4 +134,4 @@ workflows:
             - publish-dev
           filters:
             branches:
-              only: master
+              only: main

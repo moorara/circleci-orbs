@@ -37,8 +37,8 @@ A collection of common and reusable [CircleCI Orbs](https://circleci.com/orbs).
   - `circleci orb publish promote <namespace>/<orb>@<version> <segment> [flags]`
 
 
-[circleci-url]: https://circleci.com/gh/moorara/circleci-orbs/tree/master
-[circleci-image]: https://circleci.com/gh/moorara/circleci-orbs/tree/master.svg?style=shield
+[circleci-url]: https://circleci.com/gh/moorara/circleci-orbs/tree/main
+[circleci-image]: https://circleci.com/gh/moorara/circleci-orbs/tree/main.svg?style=shield
 [devops-orb-url]: https://circleci.com/orbs/registry/orb/moorara/devops
 [devops-orb-image]: https://img.shields.io/endpoint.svg?label=devops&url=https://badges.circleci.io/orb/moorara/devops
 [golang-orb-url]: https://circleci.com/orbs/registry/orb/moorara/golang

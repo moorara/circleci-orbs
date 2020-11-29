@@ -52,4 +52,4 @@ workflows:
             - devops-publish
           filters:
             branches:
-              only: master
+              only: main
