@@ -11,7 +11,7 @@
 version: 2.1
 
 orbs:
-  cli: circleci/circleci-cli@0.1.8
+  cli: circleci/circleci-cli@0.1.9
   compare-url: iynere/compare-url@1.2.0
 
 jobs:
